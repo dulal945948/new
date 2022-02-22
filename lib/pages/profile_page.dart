@@ -1,9 +1,11 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_business/const/user.dart';
+import 'package:flutter_business/pages/store_page.dart';
 import 'package:flutter_business/sign%20in/login_page.dart';
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -13,224 +15,321 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  List userData = [];
-
-  // String? user_name;
-  // String? user_mail;
-  // String? user_phone;
+  var name, phone;
 
   @override
   void initState() {
-    // ignore: todo
     // TODO: implement initState
     super.initState();
     getUserData();
   }
 
+  late TextEditingController nameController;
+  late TextEditingController phoneController;
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(colors: [
-          Color.fromARGB(255, 136, 10, 10),
-          Color.fromARGB(255, 19, 179, 25),
-          Color.fromARGB(255, 122, 114, 36),
-          Color.fromARGB(255, 214, 140, 29),
-          Color.fromARGB(255, 124, 26, 141),
-          Color.fromARGB(255, 168, 32, 77),
-          Color.fromARGB(255, 245, 66, 53),
-          Color.fromARGB(255, 66, 92, 235),
-          Color.fromARGB(255, 85, 229, 248),
-          Color.fromARGB(255, 36, 253, 43),
-          Color.fromARGB(255, 61, 3, 160)
-        ], begin: Alignment.bottomRight, end: Alignment.topLeft),
-      ),
-      padding: const EdgeInsets.all(10),
-      constraints: const BoxConstraints.expand(),
-      child:
-          //  user_phone == null
-          //     ? const Center(child: CircularProgressIndicator())
-          //     :
-          Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const CircleAvatar(
-            backgroundColor: Color.fromARGB(255, 197, 233, 66),
-            radius: 60,
-            child: Icon(
-              Icons.person_outline,
-              size: 80,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Card(
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: const [
-                  Icon(Icons.person),
-                  SizedBox(
-                    width: 24,
-                  ),
-                  Text(
-                    'user_name', style: TextStyle(fontSize: 18),
-                    // userData[index]['name'],
-                    // style: const TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Card(
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: const [
-                  Icon(Icons.mail),
-                  SizedBox(
-                    width: 24,
-                  ),
-                  Text(
-                    'user_mail', style: TextStyle(fontSize: 18),
-                    // userData[index]['email'],
-                    // style: const TextStyle(fontSize: 18),
-                    // userData[index]['email']
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Card(
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: const [
-                  Icon(Icons.phone),
-                  SizedBox(
-                    width: 24,
-                  ),
-                  Text(
-                    'user_phone', style: TextStyle(fontSize: 18), 
+    nameController = TextEditingController(text: user_name);
+    phoneController = TextEditingController(text: user_phone);
 
-                    // userData[index]['phone'],
-                    // style: const TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue.shade400,
+          leading: BackButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => StorePage()));
+            },
           ),
-          const SizedBox(
-            height: 24,
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Colors.indigo,
+                  Colors.deepOrange,
+                  Colors.grey,
+                  Colors.blue,
+                  Colors.amber,
+                  Colors.teal,
+                  Colors.amber,
+                ]),
+            color: Colors.lightBlue,
+            shape: BoxShape.rectangle,
+            border: Border.all(width: 2, color: Colors.white),
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(40), bottomRight: Radius.circular(60)),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.blueGrey.shade300,
+                  blurRadius: 4.0,
+                  spreadRadius: 10,
+                  offset: Offset(2, 2))
+            ],
           ),
-          Row(
+          // constraints: const BoxConstraints.expand(),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: MaterialButton(
-                  shape: const StadiumBorder(),
-                  color: const Color.fromARGB(255, 197, 233, 66),
-                  onPressed: () {},
-                  // => editProfile(),
-                  child: const Text('Edit Profile'),
-                ),
+              CircleAvatar(
+                backgroundImage: AssetImage('assets/images/naim.jpg'),
+                radius: 40,
               ),
               const SizedBox(
-                width: 16,
+                height: 16,
               ),
-              Expanded(
-                child: MaterialButton(
-                  shape: const StadiumBorder(),
-                  color: const Color.fromARGB(255, 197, 233, 66),
-                  onPressed: () async {
-                    await FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()));
-                  },
-                  child: const Text('Log out'),
+              Card(
+                color: Colors.green.shade500,
+                margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Colors.orange,
+                          Colors.indigo,
+                          Colors.deepOrange,
+                          Colors.grey,
+                          Colors.lightGreen,
+                          Colors.amber,
+                          Colors.teal,
+                          Colors.pink,
+                        ]),
+                    color: Colors.lightBlue,
+                    shape: BoxShape.rectangle,
+                    border: Border.all(width: 2, color: Colors.white),
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(35),
+                        bottomRight: Radius.circular(45)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.blueGrey.shade300,
+                          blurRadius: 4.0,
+                          spreadRadius: 10,
+                          offset: Offset(2, 2))
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    children: [
+                      Icon(Icons.person),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        name ?? 'Null data',
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+              Card(
+                color: Colors.green.shade500,
+                margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Colors.orange,
+                          Colors.indigo,
+                          Colors.deepOrange,
+                          Colors.grey,
+                          Colors.lightGreen,
+                          Colors.amber,
+                          Colors.teal,
+                          Colors.pink,
+                        ]),
+                    color: Colors.lightBlue,
+                    shape: BoxShape.rectangle,
+                    border: Border.all(width: 2, color: Colors.white),
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(35),
+                        bottomRight: Radius.circular(45)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.blueGrey.shade300,
+                          blurRadius: 4.0,
+                          spreadRadius: 10,
+                          offset: Offset(2, 2))
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.mail),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        user_mail ?? 'Null data',
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Card(
+                color: Colors.green.shade500,
+                margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Colors.orange,
+                          Colors.indigo,
+                          Colors.deepOrange,
+                          Colors.grey,
+                          Colors.lightGreen,
+                          Colors.amber,
+                          Colors.teal,
+                          Colors.pink,
+                        ]),
+                    color: Colors.lightBlue,
+                    shape: BoxShape.rectangle,
+                    border: Border.all(width: 2, color: Colors.white),
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(35),
+                        bottomRight: Radius.circular(45)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.blueGrey.shade300,
+                          blurRadius: 4.0,
+                          spreadRadius: 10,
+                          offset: Offset(2, 2))
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    children: [
+                      Icon(Icons.phone),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        phone ?? 'Null data',
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MaterialButton(
+                      height: 40,
+                      minWidth: 100,
+                      color: Colors.blue.shade400,
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                      },
+                      child: const Text(
+                        'Log out',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      )),
+                  MaterialButton(
+                      height: 40,
+                      minWidth: 100,
+                      color: Colors.blue.shade400,
+                      onPressed: () {
+                        editProfile();
+                      },
+                      child: const Text(
+                        'Edit profile',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      )),
+                ],
+              )
             ],
-          )
-        ],
-      ),
-    ));
+          ),
+        ));
+  }
+
+  getUserData() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    var userData = await firestore.collection('user').doc(user_mail).get();
+
+    user_mail = userData['mail'];
+    name = userData['name'];
+    phone = userData['phone'];
+    setState(() {});
+    print(user_mail);
+    print(userData);
   }
 
   editProfile() {
-    TextEditingController nameController =
-        TextEditingController(text: user_name);
-    TextEditingController phoneController =
-        TextEditingController(text: user_phone);
-
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: nameController,
-                  decoration:
-                      const InputDecoration(icon: Icon(Icons.person_outline)),
-                ),
-                TextField(
+      barrierColor: Colors.amber.shade200,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Update your profile',
+            style: TextStyle(
+                fontSize: 18,
+                color: Colors.black87,
+                fontWeight: FontWeight.bold),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(icon: Icon(Icons.person)),
+              ),
+              TextField(
                   controller: phoneController,
-                  decoration: const InputDecoration(icon: Icon(Icons.phone)),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () async {
-                    FirebaseFirestore firestore = FirebaseFirestore.instance;
-                    firestore.collection('users').doc().update({
-                      'name': nameController.text,
-                      'phone': phoneController.text
-                    });
-
-                    getUserData();
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Ok')),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancel')),
+                  decoration: InputDecoration(icon: Icon(Icons.phone))),
             ],
-          );
-        });
+          ),
+          actions: [
+            TextButton(
+              child: Text(
+                'Ok',
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {
+                updateProfile();
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Cancel',
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
-  void getUserData() async {
-    FirebaseFirestore fireStore = FirebaseFirestore.instance;
-    var data = await fireStore.collection('users').get();
-    for (var doc in data.docs) {
-      setState(() {
-        Map map = {
-          user_mail: doc['email'],
-          user_name: doc['name'],
-          user_phone: doc['phone'],
-          user_id: doc.id
-        };
-        userData.add(map);
-      });
-      if (kDebugMode) {
-        print(userData);
-      }
-    }
+  updateProfile() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    await firestore.collection('user').doc(user_mail).update({
+      'name': nameController.text,
+      'phone': phoneController.text
+    }).then((value) => getUserData());
   }
 }
