@@ -285,16 +285,14 @@ class _WishListPageState extends State<WishListPage> {
     getWishlistData();
   }
 
-  void addToCart({
-    required int index,
-  }) async {
+  void addToCart({ required int index, }) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     await firestore
         .collection('users-cart')
         .doc(user_mail)
         .collection('cart')
         .add(wishListItems[index]);
-    getWishlistData();
+        getWishlistData();
 
     showSuccessDialog('Successfully Added to Cart', context);
   }
