@@ -1,11 +1,10 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_business/const/user.dart';
 import 'package:flutter_business/pages/store_page.dart';
 import 'package:flutter_business/sign%20in/login_page.dart';
-
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -38,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
           leading: BackButton(
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => StorePage()));
+                  MaterialPageRoute(builder: (context) => const StorePage()));
             },
           ),
         ),
@@ -60,21 +59,23 @@ class _ProfilePageState extends State<ProfilePage> {
             shape: BoxShape.rectangle,
             border: Border.all(width: 2, color: Colors.white),
             borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(40), bottomRight: Radius.circular(60)),
+                // topLeft: Radius.circular(40), bottomRight: Radius.circular(60)
+                ),
             boxShadow: [
               BoxShadow(
                   color: Colors.blueGrey.shade300,
                   blurRadius: 4.0,
                   spreadRadius: 10,
-                  offset: Offset(2, 2))
+                  offset: const Offset(2, 2))
             ],
           ),
           // constraints: const BoxConstraints.expand(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
-                backgroundImage: AssetImage('assets/images/naim.jpg'),
+              const CircleAvatar(
+                backgroundColor: Color.fromARGB(255, 134, 35, 109),
+                child: Icon(Icons.person, size: 50),
                 radius: 40,
               ),
               const SizedBox(
@@ -102,26 +103,27 @@ class _ProfilePageState extends State<ProfilePage> {
                     shape: BoxShape.rectangle,
                     border: Border.all(width: 2, color: Colors.white),
                     borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(35),
-                        bottomRight: Radius.circular(45)),
+                        // topLeft: Radius.circular(35),
+                        // bottomRight: Radius.circular(45)
+                        ),
                     boxShadow: [
                       BoxShadow(
                           color: Colors.blueGrey.shade300,
                           blurRadius: 4.0,
                           spreadRadius: 10,
-                          offset: Offset(2, 2))
+                          offset: const Offset(2, 2))
                     ],
                   ),
                   padding: const EdgeInsets.all(15),
                   child: Row(
                     children: [
-                      Icon(Icons.person),
+                      const Icon(Icons.person),
                       const SizedBox(
                         width: 15,
                       ),
                       Text(
                         name ?? 'Null data',
-                        style: TextStyle(fontSize: 18, color: Colors.black),
+                        style: const TextStyle(fontSize: 18, color: Colors.black),
                       ),
                     ],
                   ),
@@ -149,14 +151,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     shape: BoxShape.rectangle,
                     border: Border.all(width: 2, color: Colors.white),
                     borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(35),
-                        bottomRight: Radius.circular(45)),
+                        // topLeft: Radius.circular(35),
+                        // bottomRight: Radius.circular(45)
+                        ),
                     boxShadow: [
                       BoxShadow(
                           color: Colors.blueGrey.shade300,
                           blurRadius: 4.0,
                           spreadRadius: 10,
-                          offset: Offset(2, 2))
+                          offset: const Offset(2, 2))
                     ],
                   ),
                   padding: const EdgeInsets.all(15),
@@ -168,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       Text(
                         user_mail ?? 'Null data',
-                        style: TextStyle(fontSize: 18, color: Colors.black),
+                        style: const TextStyle(fontSize: 18, color: Colors.black),
                       ),
                     ],
                   ),
@@ -196,32 +199,33 @@ class _ProfilePageState extends State<ProfilePage> {
                     shape: BoxShape.rectangle,
                     border: Border.all(width: 2, color: Colors.white),
                     borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(35),
-                        bottomRight: Radius.circular(45)),
+                        // topLeft: Radius.circular(35),
+                        // bottomRight: Radius.circular(45)
+                        ),
                     boxShadow: [
                       BoxShadow(
                           color: Colors.blueGrey.shade300,
                           blurRadius: 4.0,
                           spreadRadius: 10,
-                          offset: Offset(2, 2))
+                          offset: const Offset(2, 2))
                     ],
                   ),
                   padding: const EdgeInsets.all(15),
                   child: Row(
                     children: [
-                      Icon(Icons.phone),
+                      const Icon(Icons.phone),
                       const SizedBox(
                         width: 15,
                       ),
                       Text(
                         phone ?? 'Null data',
-                        style: TextStyle(fontSize: 18, color: Colors.black),
+                        style: const TextStyle(fontSize: 18, color: Colors.black),
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               Row(
@@ -236,7 +240,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginPage()));
+                                builder: (context) => const LoginPage()));
                       },
                       child: const Text(
                         'Log out',
@@ -269,8 +273,12 @@ class _ProfilePageState extends State<ProfilePage> {
     name = userData['name'];
     phone = userData['phone'];
     setState(() {});
-    print(user_mail);
-    print(userData);
+    if (kDebugMode) {
+      print(user_mail);
+    }
+    if (kDebugMode) {
+      print(userData);
+    }
   }
 
   editProfile() {
@@ -279,7 +287,7 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
+          title: const Text(
             'Update your profile',
             style: TextStyle(
                 fontSize: 18,
@@ -291,16 +299,16 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               TextField(
                 controller: nameController,
-                decoration: InputDecoration(icon: Icon(Icons.person)),
+                decoration: const InputDecoration(icon: Icon(Icons.person)),
               ),
               TextField(
                   controller: phoneController,
-                  decoration: InputDecoration(icon: Icon(Icons.phone))),
+                  decoration: const InputDecoration(icon: Icon(Icons.phone))),
             ],
           ),
           actions: [
             TextButton(
-              child: Text(
+              child: const Text(
                 'Ok',
                 style: TextStyle(fontSize: 16),
               ),
@@ -310,7 +318,7 @@ class _ProfilePageState extends State<ProfilePage> {
               },
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 'Cancel',
                 style: TextStyle(fontSize: 16),
               ),
